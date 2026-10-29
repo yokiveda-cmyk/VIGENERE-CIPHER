@@ -30,7 +30,73 @@ STEP-8: Repeat the above steps to generate the entire cipher text.
 
 
 ## PROGRAM
-
+```
+#include <stdio.h> 
+#include <string.h> 
+#include <ctype.h> 
+ 
+// Function to encrypt the text using Vigenère cipher 
+void encrypt(char* plaintext, char* key, char* ciphertext) { 
+    int textLen = strlen(plaintext); 
+    int keyLen = strlen(key); 
+ 
+    for (int i = 0, j = 0; i < textLen; i++) { 
+        char p = plaintext[i]; 
+ 
+        if (isalpha(p)) { 
+            char base = isupper(p) ? 'A' : 'a'; 
+            char k = tolower(key[j % keyLen]) - 'a'; 
+            ciphertext[i] = (p - base + k) % 26 + base; 
+            j++; 
+        } else { 
+            ciphertext[i] = p; // keep non-alphabetic characters as-is 
+        } 
+    } 
+ 
+    ciphertext[textLen] = '\0'; 
+} 
+ 
+// Function to decrypt the text using Vigenère cipher 
+void decrypt(char* ciphertext, char* key, char* plaintext) { 
+    int textLen = strlen(ciphertext); 
+    int keyLen = strlen(key); 
+ 
+    for (int i = 0, j = 0; i < textLen; i++) { 
+        char c = ciphertext[i]; 
+ 
+        if (isalpha(c)) { 
+            char base = isupper(c) ? 'A' : 'a'; 
+            char k = tolower(key[j % keyLen]) - 'a'; 
+            plaintext[i] = (c - base - k + 26) % 26 + base; 
+            j++; 
+        } else { 
+            plaintext[i] = c; // keep non-alphabetic characters as-is 
+        } 
+    } 
+ 
+    plaintext[textLen] = '\0'; 
+} 
+ 
+int main() { 
+    char plaintext[1024]; 
+    char key[1024]; 
+    char ciphertext[1024]; 
+char decrypted[1024]; 
+printf("Enter plaintext: "); 
+fgets(plaintext, sizeof(plaintext), stdin); 
+plaintext[strcspn(plaintext, "\n")] = '\0'; // remove newline 
+printf("Enter key (alphabetic only): "); 
+fgets(key, sizeof(key), stdin); 
+key[strcspn(key, "\n")] = '\0'; // remove newline 
+encrypt(plaintext, key, ciphertext); 
+printf("Encrypted text: %s\n", ciphertext); 
+decrypt(ciphertext, key, decrypted); 
+printf("Decrypted text: %s\n", decrypted); 
+return 0; 
+}
+```
 ## OUTPUT
+<img width="436" height="141" alt="image" src="https://github.com/user-attachments/assets/ecfc5106-85f4-4edd-8988-9e2051f1c5cc" />
 
 ## RESULT
+The implement of Vigenere Cipher substitution technique using C program is successful.
